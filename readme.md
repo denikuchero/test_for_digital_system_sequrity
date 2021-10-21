@@ -22,3 +22,18 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 ./manage.py test
 
 
+**запуск только базы**
+docker-compose -f docker-compose-postgres.yml up -d
+docker-compose -f docker-compose-postgres.yml logs
+docker exec test_for_restapi_db_postgres_test_1 pg_dump -v -h localhost -p 5432 -U postgres djangodb >dump_django.sql
+
+в настройках settings.py 
+нужно изменить
+
+DATABASES = {
+    'default': {
+            ...
+        'PORT' : '4040'
+            ...
+    }
+}
